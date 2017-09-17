@@ -1,0 +1,17 @@
+{
+  "name": "twitch_top_eight",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "author": "Thomas Buida",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "jsonwebtoken": "^7.4.1",
+    "raygun": "^0.9.1",
+    "redis": "^2.7.1",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.4"
+  }
+}
