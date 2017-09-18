@@ -69,6 +69,31 @@ app.get('/top', (req, res) => {
     });
 });
 
+app.post('/saveTop', (req, res) => {
+    if (!req.headers.authorization) {
+        res.sendStatus(403);
+        res.end();
+        return;
+    }
+
+    const incomingJwt = req.headers.authorization.slice(bearerPrefixLength);
+
+    jwt.verify(incomingJwt, SHARED_SECRET, {algorithms: ['HS256']}, (err, source) => {
+        if (err) {
+            console.log('unable to verify jwt', err);
+            res.sendStatus(403);
+            res.end();
+            return;
+        }
+
+        console.log('successfully verified user, save their selected top 8 now');
+        console.log('save top 8 data', req.body);
+
+        helpers.saveTop(req.body.channelID, req.body.top).then(() => {
+            console.log('top 8 saved');
+        });
+    });
+})
 
 const PORT = 8000;
 
