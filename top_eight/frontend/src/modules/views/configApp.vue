@@ -2,12 +2,16 @@
 
 <template>
     <div>
-        <h3 class="config-title">Pick Top 8</h3>
+        <h3 class="config-title">Set Top 8</h3>
 
         <div v-cloak>
             <section class="spinner-container" v-if="loadingTop">
                 <simple-spinner></simple-spinner>
             </section>
+
+            <div v-if="!loadingTop">
+                <member :member="member" v-for="(member, index) in top" :key="member.position"></member> 
+            </div>
         </div>
     </div>
 </template>
@@ -35,18 +39,32 @@
                 console.log('Twitch.ext.onError', err);
             });
         },
+        components: {
+            'member': require('./member.vue')
+        },
         methods: {
             init(authData) {
-                this.getTop(authData).then(top => {
-                    if (!top) return;
+                this.getTop(authData).then(topData => {
+                    if (!topData) return;
 
-                    //TODO: set top
+                    // add the topData data to the page
+                    this.setTop(topData.data);
 
                     this.loadingTop = false;
                 }).catch(err => {
                     console.log('err', err);
                     return false;
                 });
+            },
+            getTop(auth) {
+                let channelID = auth.channelId;
+                let qs = channelID ? {channelID} : null;
+
+                return http.get('top', {qs, auth});
+            },
+            setTop(top) {
+                console.log('setting top with', top);
+                this.top = top;
             }
         }
     }

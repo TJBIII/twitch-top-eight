@@ -9,7 +9,7 @@ const express = require('express'),
     https = require('https'),
     path = require('path'),
     request = require('request'),
-    utils = require('./helpers/utils'),
+    utils = require('./modules/utils'),
     jwt = require('jsonwebtoken');
 
 const bearerPrefixLength = 7;
@@ -64,8 +64,14 @@ app.get('/top', (req, res) => {
         const channelID = req.query.channelID;
 
         console.log('successfully verified user, serve up the top 8 for the channel', channelID);
+        let top = [{position: 1, display_name: 'tBUIDa8', logo: 'https://static-cdn.jtvnw.net/jtv_user_pictures/tbuida8-profile_image-b5617a5a20025236-300x300.png'}, {position: 2, display_name: 'testFriend', url: 'https://static-cdn.jtvnw.net/jtv_user_pictures/drdisrespectlive-profile_image-abc1fc67d2ea1ae1-300x300.png'}]
+        while (top.length < 8) {
+            top.push({position: top.length + 1, display_name: `friend${top.length + 1}`, logo: null});
+        }
 
-        res.send({data: 'data'})
+        let response = {data: top}
+
+        res.send(response);
     });
 });
 
