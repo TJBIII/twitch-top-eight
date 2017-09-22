@@ -2,7 +2,8 @@
     .member {
         text-align: center;
         width: 22.5%;
-        margin: 0 1.25%;
+        padding: 0 1.25%;
+        padding-bottom: 20px;
         display: inline-block;
     }
 

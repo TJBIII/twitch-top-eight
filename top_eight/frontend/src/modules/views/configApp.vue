@@ -1,8 +1,9 @@
 <style src="../../../assets/css/config.css"></style>
 
 <template>
-    <div>
-        <h3 class="config-title">Set Top 8</h3>
+    <div class="container">
+        <h1 class="config-title">Set Top 8</h1>
+        <p>Drag to sort!</p>
 
         <div v-cloak>
             <section class="spinner-container" v-if="loadingTop">
@@ -10,7 +11,13 @@
             </section>
 
             <div v-if="!loadingTop">
-                <member :member="member" v-for="(member, index) in top" :key="member.position"></member> 
+                <div v-sortable="{onUpdate: onUpdate}">
+                    <member :member="member" v-for="(member, index) in top" :key="member.position"></member> 
+                </div>
+
+                <div class="save-button">
+                    <button class="btn" :disabled="savingTop" v-on:click="save">{{ saveButtonText }}</button>
+                </div>
             </div>
         </div>
     </div>
@@ -40,7 +47,7 @@
             });
         },
         components: {
-            'member': require('./member.vue')
+            'member': require('./memberSort.vue')
         },
         methods: {
             init(authData) {
@@ -65,6 +72,12 @@
             setTop(top) {
                 console.log('setting top with', top);
                 this.top = top;
+            },
+            onUpdate({oldIndex, newIndex}) {
+                console.log('sortable update', event);
+                const movedItem = this.top.splice(oldIndex, 1)[0]
+                this.top.splice(newIndex, 0, movedItem)
+            },
             }
         }
     }
