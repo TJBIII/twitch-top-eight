@@ -71,6 +71,7 @@
             },
             setTop(top) {
                 console.log('setting top with', top);
+                if (!top) return;
 
                 this.top = top.sort((a, b) => a.position - b.position);
             },

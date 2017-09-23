@@ -1,4 +1,5 @@
 const rp = require('request-promise-native'),
+    utils = require('./utils'),
     twitch = require('./twitch'),
     redis = require('redis');
 
@@ -26,6 +27,18 @@ if (process.env.NODE_ENV === 'production') {
 const KRAKEN_API_ROOT = 'https://api.twitch.tv/kraken';
 const CLIENT_ID = 'fp6wx90nh8ciwtqb6male0jen9dap8';
 
+const saveTopToRedis = (confirmedTop, channelID) => {
+    return new Promise((resolve, reject) => {
+        db.set(`twitchTopPE:top:${channelID}`, JSON.stringify(confirmedTop), (err, res) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(confirmedTop);
+            }
+        });
+    });
+};
+
 exports.getTopForChannel = channelID => {
     return new Promise((resolve, reject) => {
         db.get(`twitchTopPE:top:${channelID}`, (err, topData) => {
@@ -47,12 +60,18 @@ exports.saveTopForChannel = (channelID, top) => {
     // verify that users exist
     return new Promise ((resolve, reject) => {
         twitch.getUsers(usernamesArr).then(twitchUserData => {
-            console.log('twitchUserData', twitchUserData);
+            let confirmedTop = utils.compareTopWithTwitch(top, twitchUserData);
 
-            // TODO: SAVE TO REDIS
-            resolve(twitchUserData);
+            // console.log('twitchUserData', twitchUserData);
+            // console.log('confirmedTop', confirmedTop);
+
+            return saveTopToRedis(confirmedTop, channelID);
+        }, err => {
+            reject(err);
+        }).then(confirmedTop => {
+            resolve(confirmedTop);
         }, err => {
             reject(err);
         });
     });
-}
+};

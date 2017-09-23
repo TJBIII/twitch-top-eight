@@ -63,16 +63,20 @@ app.get('/top', (req, res) => {
         }
 
         const channelID = req.query.channelID;
-
         console.log('successfully verified user, serve up the top 8 for the channel', channelID);
-        let top = [{position: 2, display_name: 'tBUIDa8', logo: 'https://static-cdn.jtvnw.net/jtv_user_pictures/tbuida8-profile_image-b5617a5a20025236-300x300.png'}, {position: 1, display_name: 'testFriend', url: 'https://static-cdn.jtvnw.net/jtv_user_pictures/drdisrespectlive-profile_image-abc1fc67d2ea1ae1-300x300.png'}]
-        while (top.length < 8) {
-            top.push({position: top.length + 1, display_name: `friend${top.length + 1}`, logo: null});
-        }
 
-        let response = {data: top}
+        helpers.getTopForChannel(channelID).then(top => {
+            console.log('top', top);
+            let response = {data: top};
+            res.send(response);
+        });
 
-        res.send(response);
+        // let top = [{position: 2, display_name: 'tBUIDa8', logo: 'https://static-cdn.jtvnw.net/jtv_user_pictures/tbuida8-profile_image-b5617a5a20025236-300x300.png'}, {position: 1, display_name: 'testFriend', url: 'https://static-cdn.jtvnw.net/jtv_user_pictures/drdisrespectlive-profile_image-abc1fc67d2ea1ae1-300x300.png'}]
+        // while (top.length < 8) {
+        //     top.push({position: top.length + 1, display_name: `friend${top.length + 1}`, logo: null});
+        // }
+        // let response = {data: top}
+        // res.send(response);
     });
 });
 
@@ -98,7 +102,10 @@ app.post('/saveTop', (req, res) => {
 
         helpers.saveTopForChannel(req.body.channelID, req.body.top).then(() => {
             console.log('top 8 saved');
-            res.sendStatus(200);
+            let status = 200,
+                data = {message: 'Successfully saved!'};
+
+            res.send({status, data});
         }, err => {
             console.log('error savingtopforchannel promise', err);
         });
