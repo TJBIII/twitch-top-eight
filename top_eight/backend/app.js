@@ -17,6 +17,7 @@ const bearerPrefixLength = 7;
 
 utils.assertEnvVar('NODE_ENV');
 utils.assertEnvVar('SHARED_SECRET');
+utils.assertEnvVar('EXT_CLIENT_ID');
 
 const SHARED_SECRET = Buffer.from(process.env.SHARED_SECRET, 'base64');
 const clientId = 'fp6wx90nh8ciwtqb6male0jen9dap8';

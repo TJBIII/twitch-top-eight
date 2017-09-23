@@ -51,12 +51,17 @@
             });
 
             window.Twitch.ext.listen('broadcast', (topic, contentType, message) => {
-                const data = JSON.parse(message),
-                    evt = data.evt;
+                const data = JSON.parse(message);
+
+                const evt = data.evt,
+                    top = data.top;
+
+                console.log('top', top);
+                console.log('evt', evt);
 
                 switch (evt) {
-                    case 'topUpdate':
-                        this.setTop(data.top);
+                    case 'updateTop':
+                        this.setTop(top);
                         break;
                 }
             });

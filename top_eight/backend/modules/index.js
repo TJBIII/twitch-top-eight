@@ -1,6 +1,7 @@
 const rp = require('request-promise-native'),
     utils = require('./utils'),
     twitch = require('./twitch'),
+    twitchPubSub = require('./pubsub/twitch'),
     redis = require('redis');
 
 const redisOptions = {};
@@ -62,9 +63,6 @@ exports.saveTopForChannel = (channelID, top) => {
         twitch.getUsers(usernamesArr).then(twitchUserData => {
             let confirmedTop = utils.compareTopWithTwitch(top, twitchUserData);
 
-            // console.log('twitchUserData', twitchUserData);
-            // console.log('confirmedTop', confirmedTop);
-
             // update so we have the correct positions
             confirmedTop = confirmedTop.map((member, idx) => {
                 member.position = idx + 1;
@@ -76,6 +74,9 @@ exports.saveTopForChannel = (channelID, top) => {
             reject(err);
         }).then(confirmedTop => {
             resolve(confirmedTop);
+
+            // broadcast new top via twitch pub sub
+            twitchPubSub.broadcast(channelID, {evt: 'updateTop', top: confirmedTop})
         }, err => {
             reject(err);
         });
