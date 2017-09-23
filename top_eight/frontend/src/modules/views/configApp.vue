@@ -86,6 +86,7 @@
                 console.log('sortable update', event);
                 const movedItem = this.top.splice(oldIndex, 1)[0]
                 this.top.splice(newIndex, 0, movedItem)
+                this.saveButtonText = 'Save';
             },
             save() {
                 this.savingTop = true;
@@ -123,9 +124,11 @@
 
                 this.top.push(newMember);
                 this.newMemberUsernameText = null;
+                this.saveButtonText = 'Save';
             },
             removeMember(index) {
                 this.top.splice(index, 1);
+                this.saveButtonText = 'Save';
             }
         }
     }

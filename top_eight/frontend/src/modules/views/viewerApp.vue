@@ -6,7 +6,7 @@
             <simple-spinner></simple-spinner>
         </section>
 
-        <div v-if="!eight && !loading" class="center">
+        <div v-if="!top && !loading" class="center">
             <div class="panel-info">
                 <h2>Top 8</h2>
             </div>
@@ -20,6 +20,15 @@
                 </div>
             </div>
         </div>
+
+        <div v-if="top && !loading">
+            <div class="content">
+                <div class="header">
+                    <h2>{{ headerText }}</h2>
+                </div>
+            </div>
+            <member :member="member" v-for="(member, index) in top" :key="member.position"></member>
+        </div>
     </div>
 </template>
 
@@ -30,8 +39,9 @@
     export default {
         data: () => ({
             authHandler: null,
-            top: null,
-            loading: true
+            top: [],
+            loading: true,
+            headerText: `Top 8`
         }),
         created() {
             this.authHandler = new AuthHandler(this.init, () => {});
@@ -45,8 +55,8 @@
                     evt = data.evt;
 
                 switch (evt) {
-                    case 'update':
-                        this.update(data.top);
+                    case 'topUpdate':
+                        this.setTop(data.top);
                         break;
                 }
             });
@@ -60,7 +70,9 @@
         },
         methods: {
             init(authData) {
-                this.getTop(authData).then(top => {
+                this.getTop(authData).then(topData => {
+                    let top = topData.data;
+
                     this.setTop(top);
 
                     this.loading = false;
@@ -78,6 +90,7 @@
                 if (!top) return;
 
                 this.top = top;
+                this.headerText = `Top ${top && top.length ? top.length : '8'}`;
             }
         }
     }

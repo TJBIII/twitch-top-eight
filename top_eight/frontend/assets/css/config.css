@@ -43,7 +43,6 @@
 
 .add img {
     max-width: 80%;
-    margin-top: 10px;
 }
 
 .add img:hover {
@@ -52,6 +51,8 @@
 
 .add input {
     max-width: 100%;
-    padding: 0;
+    padding: 5px;
+    height: 17px;
+    width: 80%;
 }
 
