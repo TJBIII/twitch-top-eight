@@ -40,11 +40,19 @@ exports.getTopForChannel = channelID => {
 };
 
 exports.saveTopForChannel = (channelID, top) => {
-    // TODO: get usernamesArr
-    // let usernamesArr = top.map()
+    let usernamesArr = top.map(member => member.display_name).filter(member => !member.display_name);
+
+    console.log('usernamesArr', usernamesArr);
 
     // verify that users exist
-    // twitch.getUsers(usernamesArr).then(twitchUserData => {
-    //      console.log('twitchUserData', twitchUserData);   
-    // })
+    return new Promise ((resolve, reject) => {
+        twitch.getUsers(usernamesArr).then(twitchUserData => {
+            console.log('twitchUserData', twitchUserData);
+
+            // TODO: SAVE TO REDIS
+            resolve(twitchUserData);
+        }, err => {
+            reject(err);
+        });
+    });
 }

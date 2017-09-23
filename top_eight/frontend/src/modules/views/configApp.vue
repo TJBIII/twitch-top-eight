@@ -71,13 +71,38 @@
             },
             setTop(top) {
                 console.log('setting top with', top);
-                this.top = top;
+
+                this.top = top.sort((a, b) => a.position - b.position);
             },
             onUpdate({oldIndex, newIndex}) {
                 console.log('sortable update', event);
                 const movedItem = this.top.splice(oldIndex, 1)[0]
                 this.top.splice(newIndex, 0, movedItem)
             },
+            save() {
+                this.savingTop = true;
+                this.saveButtonText = 'Saving...';
+                let top = this.top.map((member, idx) => {
+                    member.position = idx + 1;
+                    return member;
+                });
+
+                let auth = {
+                    token: this.authHandler.getAuthToken()
+                };
+
+                let body = {
+                    top,
+                    channelID: this.authHandler.getChannelID()
+                };
+
+                http.post('saveTop', {body, auth}).then(saveResponse => {
+                    this.saveButtonText = 'Saved';
+                    this.savingTop = false;
+                    console.log('successfully saved');
+                }).catch(err => {
+                    console.log('err', err);
+                });
             }
         }
     }

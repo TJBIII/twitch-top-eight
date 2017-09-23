@@ -10,6 +10,7 @@ const express = require('express'),
     path = require('path'),
     request = require('request'),
     utils = require('./modules/utils'),
+    helpers = require('./modules/index'),
     jwt = require('jsonwebtoken');
 
 const bearerPrefixLength = 7;
@@ -64,7 +65,7 @@ app.get('/top', (req, res) => {
         const channelID = req.query.channelID;
 
         console.log('successfully verified user, serve up the top 8 for the channel', channelID);
-        let top = [{position: 1, display_name: 'tBUIDa8', logo: 'https://static-cdn.jtvnw.net/jtv_user_pictures/tbuida8-profile_image-b5617a5a20025236-300x300.png'}, {position: 2, display_name: 'testFriend', url: 'https://static-cdn.jtvnw.net/jtv_user_pictures/drdisrespectlive-profile_image-abc1fc67d2ea1ae1-300x300.png'}]
+        let top = [{position: 2, display_name: 'tBUIDa8', logo: 'https://static-cdn.jtvnw.net/jtv_user_pictures/tbuida8-profile_image-b5617a5a20025236-300x300.png'}, {position: 1, display_name: 'testFriend', url: 'https://static-cdn.jtvnw.net/jtv_user_pictures/drdisrespectlive-profile_image-abc1fc67d2ea1ae1-300x300.png'}]
         while (top.length < 8) {
             top.push({position: top.length + 1, display_name: `friend${top.length + 1}`, logo: null});
         }
@@ -95,8 +96,11 @@ app.post('/saveTop', (req, res) => {
         console.log('successfully verified user, save their selected top 8 now');
         console.log('save top 8 data', req.body);
 
-        helpers.saveTop(req.body.channelID, req.body.top).then(() => {
+        helpers.saveTopForChannel(req.body.channelID, req.body.top).then(() => {
             console.log('top 8 saved');
+            res.sendStatus(200);
+        }, err => {
+            console.log('error savingtopforchannel promise', err);
         });
     });
 })
