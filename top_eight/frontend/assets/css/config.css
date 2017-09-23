@@ -20,6 +20,19 @@
     font-size: 1em;
 }
 
+.member {
+    text-align: center;
+    width: 22.5%;
+    padding: 0 1.25%;
+    padding-bottom: 20px;
+    display: inline-block;
+}
+
+.member img {
+    max-width: 80%;
+    margin-top: 10px;
+}
+
 .add {
     text-align: center;
     width: 22.5%;

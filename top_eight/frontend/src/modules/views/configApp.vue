@@ -12,7 +12,11 @@
 
             <div v-if="!loadingTop">
                 <span v-sortable="{onUpdate: onUpdate}">
-                    <member :member="member" v-for="(member, index) in top" :key="member.position"></member>
+                    <div class="member" v-for="(member, index) in top" :key="member.position">
+                        <div class="member_name">{{ member.display_name }} ({{member.position}}) <span v-on:click="removeMember(index)">X</span></div>
+                        <img v-if="member.logo" v-bind:src="member.logo">
+                        <img v-if="!member.logo" src="assets/img/glitch_purple.png">
+                    </div>
                 </span>
 
                 <div v-if="top && top.length < 8" class="add">
@@ -51,9 +55,6 @@
             window.Twitch.ext.onError(err => {
                 console.log('Twitch.ext.onError', err);
             });
-        },
-        components: {
-            'member': require('./memberSort.vue')
         },
         methods: {
             init(authData) {
@@ -122,6 +123,9 @@
 
                 this.top.push(newMember);
                 this.newMemberUsernameText = null;
+            },
+            removeMember(index) {
+                this.top.splice(index, 1);
             }
         }
     }
