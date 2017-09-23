@@ -18,7 +18,7 @@
         <a href="">
             <div class="member_name">{{ member.display_name }} ({{member.position}})</div>
             <img v-if="member.logo" v-bind:src="member.logo">
-            <img v-if="!member.logo" src="assets/img/glitch.png">
+            <img v-if="!member.logo" src="assets/img/glitch_purple.png">
         </a>
     </div>
 </template>

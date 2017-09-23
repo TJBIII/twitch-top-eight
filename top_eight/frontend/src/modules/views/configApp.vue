@@ -11,11 +11,16 @@
             </section>
 
             <div v-if="!loadingTop">
-                <div v-sortable="{onUpdate: onUpdate}">
-                    <member :member="member" v-for="(member, index) in top" :key="member.position"></member> 
+                <span v-sortable="{onUpdate: onUpdate}">
+                    <member :member="member" v-for="(member, index) in top" :key="member.position"></member>
+                </span>
+
+                <div v-if="top && top.length < 8" class="add">
+                    <input placeholder="Add by username..." v-model="newMemberUsernameText" v-on:keyup.enter="addMember" type="text">
+                    <img v-on:click="addMember" src="assets/img/add.png">
                 </div>
 
-                <div class="save-button">
+                <div v-if="top" class="save-button">
                     <button class="btn" :disabled="savingTop" v-on:click="save">{{ saveButtonText }}</button>
                 </div>
             </div>
@@ -34,6 +39,7 @@
             loadingTop: true,
             savingTop: false,
             saveButtonText: 'Save Top 8',
+            newMemberUsernameText: null
         }),
         created() {
             this.authHandler = new AuthHandler(this.init, () => {});
@@ -101,9 +107,21 @@
                     this.saveButtonText = 'Saved';
                     this.savingTop = false;
                     console.log('successfully saved');
+                    this.top = saveResponse.data.savedTop;
                 }).catch(err => {
                     console.log('err', err);
                 });
+            },
+            addMember() {
+                if (!this.newMemberUsernameText) return;
+
+                let newMember = {
+                    display_name: this.newMemberUsernameText,
+                    position: this.top.length + 1
+                }
+
+                this.top.push(newMember);
+                this.newMemberUsernameText = null;
             }
         }
     }

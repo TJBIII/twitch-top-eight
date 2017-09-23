@@ -65,6 +65,12 @@ exports.saveTopForChannel = (channelID, top) => {
             // console.log('twitchUserData', twitchUserData);
             // console.log('confirmedTop', confirmedTop);
 
+            // update so we have the correct positions
+            confirmedTop = confirmedTop.map((member, idx) => {
+                member.position = idx + 1;
+                return member;
+            });
+
             return saveTopToRedis(confirmedTop, channelID);
         }, err => {
             reject(err);

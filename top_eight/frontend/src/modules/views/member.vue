@@ -2,7 +2,8 @@
     .member {
         text-align: center;
         width: 22.5%;
-        margin: 0 1.25%;
+        padding: 0 1.25%;
+        padding-bottom: 20px;
         display: inline-block;
     }
 
@@ -17,7 +18,7 @@
         <a href="">
             <div class="member_name">{{ member.display_name }} ({{member.position}})</div>
             <img v-if="member.logo" v-bind:src="member.logo">
-            <img v-if="!member.logo" src="assets/img/glitch.png">
+            <img v-if="!member.logo" src="assets/img/glitch_purple.png">
         </a>
     </div>
 </template>

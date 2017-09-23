@@ -100,10 +100,10 @@ app.post('/saveTop', (req, res) => {
         console.log('successfully verified user, save their selected top 8 now');
         console.log('save top 8 data', req.body);
 
-        helpers.saveTopForChannel(req.body.channelID, req.body.top).then(() => {
+        helpers.saveTopForChannel(req.body.channelID, req.body.top).then(savedTop => {
             console.log('top 8 saved');
             let status = 200,
-                data = {message: 'Successfully saved!'};
+                data = {message: 'Successfully saved!', savedTop};
 
             res.send({status, data});
         }, err => {
