@@ -6,7 +6,7 @@
             <simple-spinner></simple-spinner>
         </section>
 
-        <div v-if="!eight && !loading" class="center">
+        <div v-if="!top && !loading" class="center">
             <div class="panel-info">
                 <h2>Top 8</h2>
             </div>
@@ -20,6 +20,15 @@
                 </div>
             </div>
         </div>
+
+        <div v-if="top && !loading">
+            <div class="content">
+                <div class="header">
+                    <h3>{{ headerText }}</h3>
+                </div>
+            </div>
+            <member :member="member" v-for="(member, index) in top" :key="member.position"></member>
+        </div>
     </div>
 </template>
 
@@ -30,8 +39,9 @@
     export default {
         data: () => ({
             authHandler: null,
-            top: null,
-            loading: true
+            top: [],
+            loading: true,
+            headerText: `Top 8 Friends`
         }),
         created() {
             this.authHandler = new AuthHandler(this.init, () => {});
@@ -41,12 +51,17 @@
             });
 
             window.Twitch.ext.listen('broadcast', (topic, contentType, message) => {
-                const data = JSON.parse(message),
-                    evt = data.evt;
+                const data = JSON.parse(message);
+
+                const evt = data.evt,
+                    top = data.top;
+
+                console.log('top', top);
+                console.log('evt', evt);
 
                 switch (evt) {
-                    case 'update':
-                        this.update(data.top);
+                    case 'updateTop':
+                        this.setTop(top);
                         break;
                 }
             });
@@ -60,7 +75,9 @@
         },
         methods: {
             init(authData) {
-                this.getTop(authData).then(top => {
+                this.getTop(authData).then(topData => {
+                    let top = topData.data;
+
                     this.setTop(top);
 
                     this.loading = false;
@@ -78,6 +95,7 @@
                 if (!top) return;
 
                 this.top = top;
+                this.headerText = `Top ${top && top.length ? (top.length > 1 ? top.length + ' Friends' : 'Friend'): '8'} `;
             }
         }
     }

@@ -1,3 +1,80 @@
 [v-cloak] {
-  display: none;
+    display: none;
+}
+
+#configApp {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.container {
+    max-width: 1000px;
+}
+
+.save-button {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.save-button button {
+    padding: 1.5em;
+    font-size: 1em;
+}
+
+.member {
+    text-align: center;
+    width: 22.5%;
+    padding: 0 1.25%;
+    padding-bottom: 20px;
+    display: inline-block;
+}
+
+.member img {
+    max-width: 80%;
+    margin-top: 10px;
+}
+
+.add {
+    text-align: center;
+    width: 22.5%;
+    padding: 0 1%;
+    padding-bottom: 20px;
+    display: inline-block;
+}
+
+.add img {
+    max-width: 80%;
+}
+
+.add img:hover {
+    cursor: pointer;
+}
+
+.add input {
+    max-width: 100%;
+    padding: 5px;
+    height: 17px;
+    width: 80%;
+}
+
+.btn {
+    margin-top: 5px;
+    width: 80%;
+    background-color: #efeef1;
+    color: #6441a4;
+}
+
+.btn:hover {
+    background-color: #d7cceb;
+}
+
+button.btn {
+    padding: 1em;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-remove:hover {
+    background-color: #b71c1c;
+    color: #fff;
 }

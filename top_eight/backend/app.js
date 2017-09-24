@@ -9,13 +9,15 @@ const express = require('express'),
     https = require('https'),
     path = require('path'),
     request = require('request'),
-    utils = require('./helpers/utils'),
+    utils = require('./modules/utils'),
+    helpers = require('./modules/index'),
     jwt = require('jsonwebtoken');
 
 const bearerPrefixLength = 7;
 
 utils.assertEnvVar('NODE_ENV');
 utils.assertEnvVar('SHARED_SECRET');
+utils.assertEnvVar('EXT_CLIENT_ID');
 
 const SHARED_SECRET = Buffer.from(process.env.SHARED_SECRET, 'base64');
 const clientId = 'fp6wx90nh8ciwtqb6male0jen9dap8';
@@ -62,13 +64,57 @@ app.get('/top', (req, res) => {
         }
 
         const channelID = req.query.channelID;
-
         console.log('successfully verified user, serve up the top 8 for the channel', channelID);
 
-        res.send({data: 'data'})
+        helpers.getTopForChannel(channelID).then(top => {
+            console.log('top', top);
+            let response = {data: top};
+            res.send(response);
+        });
+
+        // let top = [{position: 2, display_name: 'tBUIDa8', logo: 'https://static-cdn.jtvnw.net/jtv_user_pictures/tbuida8-profile_image-b5617a5a20025236-300x300.png'}, {position: 1, display_name: 'testFriend', url: 'https://static-cdn.jtvnw.net/jtv_user_pictures/drdisrespectlive-profile_image-abc1fc67d2ea1ae1-300x300.png'}]
+        // while (top.length < 8) {
+        //     top.push({position: top.length + 1, display_name: `friend${top.length + 1}`, logo: null});
+        // }
+        // let response = {data: top}
+        // res.send(response);
     });
 });
 
+app.post('/saveTop', (req, res) => {
+    if (!req.headers.authorization) {
+        res.sendStatus(403);
+        res.end();
+        return;
+    }
+
+    const incomingJwt = req.headers.authorization.slice(bearerPrefixLength);
+
+    jwt.verify(incomingJwt, SHARED_SECRET, {algorithms: ['HS256']}, (err, source) => {
+        if (err) {
+            console.log('unable to verify jwt', err);
+            res.sendStatus(403);
+            res.end();
+            return;
+        }
+
+        console.log('successfully verified user, save their selected top 8 now');
+        console.log('save top 8 data', req.body);
+
+        helpers.saveTopForChannel(req.body.channelID, req.body.top).then(savedTop => {
+            console.log('top 8 saved');
+            let status = 200,
+                data = {message: 'Successfully saved!', savedTop};
+
+            res.send({status, data});
+        }, err => {
+            let status = 200,
+                data = {error: err};
+            console.log('error savingtopforchannel promise', err);
+            res.send({status, data});
+        });
+    });
+})
 
 const PORT = 8000;
 
