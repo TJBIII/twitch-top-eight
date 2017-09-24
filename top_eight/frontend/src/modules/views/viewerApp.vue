@@ -24,7 +24,7 @@
         <div v-if="top && !loading">
             <div class="content">
                 <div class="header">
-                    <h2>{{ headerText }}</h2>
+                    <h3>{{ headerText }}</h3>
                 </div>
             </div>
             <member :member="member" v-for="(member, index) in top" :key="member.position"></member>
@@ -41,7 +41,7 @@
             authHandler: null,
             top: [],
             loading: true,
-            headerText: `Top 8`
+            headerText: `Top 8 Friends`
         }),
         created() {
             this.authHandler = new AuthHandler(this.init, () => {});
@@ -95,7 +95,7 @@
                 if (!top) return;
 
                 this.top = top;
-                this.headerText = `Top ${top && top.length ? top.length : '8'}`;
+                this.headerText = `Top ${top && top.length ? (top.length > 1 ? top.length + ' Friends' : 'Friend'): '8'} `;
             }
         }
     }

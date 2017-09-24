@@ -60,6 +60,11 @@ exports.saveTopForChannel = (channelID, top) => {
 
     // verify that users exist
     return new Promise ((resolve, reject) => {
+        if (top.length > 8) {
+            reject('Only 8 friends allowed.');
+            return;
+        }
+
         twitch.getUsers(usernamesArr).then(twitchUserData => {
             let confirmedTop = utils.compareTopWithTwitch(top, twitchUserData);
 

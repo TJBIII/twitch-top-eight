@@ -108,7 +108,10 @@ app.post('/saveTop', (req, res) => {
 
             res.send({status, data});
         }, err => {
+            let status = 200,
+                data = {error: err};
             console.log('error savingtopforchannel promise', err);
+            res.send({status, data});
         });
     });
 })

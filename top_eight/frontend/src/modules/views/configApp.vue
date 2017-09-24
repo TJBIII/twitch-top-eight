@@ -13,9 +13,11 @@
             <div v-if="!loadingTop">
                 <span v-sortable="{onUpdate: onUpdate}">
                     <div class="member" v-for="(member, index) in top" :key="member.position">
-                        <div class="member_name">{{ member.display_name }} ({{member.position}}) <span v-on:click="removeMember(index)">X</span></div>
+                        <div class="member_name">{{`${index + 1 }.`}} {{ member.display_name }}</div>
                         <img v-if="member.logo" v-bind:src="member.logo">
                         <img v-if="!member.logo" src="assets/img/glitch_purple.png">
+                        <div><button class="btn btn-view" :href="'https://twitch.tv/' + member.display_name">View</button></div>
+                        <div><button class="btn btn-remove" v-on:click="removeMember(index)">Remove</button></div>
                     </div>
                 </span>
 

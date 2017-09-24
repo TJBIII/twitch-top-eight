@@ -9,6 +9,11 @@ body {
 
 html, body, #app, .content { height: 100%; }
 
+a {
+    color: #000;
+    text-decoration: none;
+}
+
 .center {
     text-align: center;
 }

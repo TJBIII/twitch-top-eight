@@ -56,3 +56,25 @@
     width: 80%;
 }
 
+.btn {
+    margin-top: 5px;
+    width: 80%;
+    background-color: #efeef1;
+    color: #6441a4;
+}
+
+.btn:hover {
+    background-color: #d7cceb;
+}
+
+button.btn {
+    padding: 1em;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-remove:hover {
+    background-color: #b71c1c;
+    color: #fff;
+}
