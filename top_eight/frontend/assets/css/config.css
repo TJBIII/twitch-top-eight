@@ -10,6 +10,10 @@
     max-width: 1000px;
 }
 
+.top-container {
+    margin-top: 50px;
+}
+
 .save-button {
     margin-top: 20px;
     text-align: center;
@@ -25,12 +29,27 @@
     width: 22.5%;
     padding: 0 1.25%;
     padding-bottom: 20px;
-    display: inline-block;
+    margin-bottom: 30px;
+    display: inline-grid;
 }
 
 .member img {
     max-width: 80%;
+    margin: 0 auto;
     margin-top: 10px;
+}
+
+.member img:hover {
+    cursor: pointer;
+}
+
+.member_name {
+    text-align: center;
+    margin: 0 auto;
+    width: 80%;
+    padding: 0.7em 0;
+    color: #6441a4;
+    background-color: #efeef1;
 }
 
 .add {
@@ -38,19 +57,23 @@
     width: 22.5%;
     padding: 0 1%;
     padding-bottom: 20px;
-    display: inline-block;
+    display: inline-grid;
 }
 
 .add img {
-    max-width: 80%;
+    max-width: 90%;
+    margin: 0 auto;
+    opacity: 0.1;
 }
 
 .add img:hover {
     cursor: pointer;
+    opacity: 0.9;
 }
 
 .add input {
     max-width: 100%;
+    margin: 0 auto;
     padding: 5px;
     height: 17px;
     width: 80%;

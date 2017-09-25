@@ -2,10 +2,10 @@
 
 <template>
     <div class="container">
-        <h1 class="config-title">Set Top 8</h1>
-        <p>Drag to sort!</p>
+        <p v-if="!top">Add a streamer or viewer to your top friends by username in the input field below. Click a user's image and drag to sort. Click the save button at the bottom to lock-in your changes.</p>
+        <p v-else>Click a user's image and drag to sort. Click the save button at the bottom to lock-in your changes.</p>
 
-        <div v-cloak>
+        <div v-cloak class="top-container">
             <section class="spinner-container" v-if="loadingTop">
                 <simple-spinner></simple-spinner>
             </section>
@@ -16,7 +16,7 @@
                         <div class="member_name">{{`${index + 1 }.`}} {{ member.display_name }}</div>
                         <img v-if="member.logo" v-bind:src="member.logo">
                         <img v-if="!member.logo" src="assets/img/glitch_purple.png">
-                        <div><button class="btn btn-view" :href="'https://twitch.tv/' + member.display_name">View</button></div>
+                        <div><a target="_blank" :href="'https://twitch.tv/' + member.display_name"><button class="btn btn-view">View</button></a></div>
                         <div><button class="btn btn-remove" v-on:click="removeMember(index)">Remove</button></div>
                     </div>
                 </span>
@@ -126,7 +126,7 @@
 
                 this.top.push(newMember);
                 this.newMemberUsernameText = null;
-                this.saveButtonText = 'Save';
+                this.save();
             },
             removeMember(index) {
                 this.top.splice(index, 1);
