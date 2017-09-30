@@ -2,8 +2,12 @@
     .member {
         text-align: center;
         width: 45%;
-        padding: 12px 2.5%;
+        padding: 10px 2.5%;
         display: inline-block;
+    }
+
+    .member:hover {
+        background-color: #efeef1;
     }
 
     .member img {
