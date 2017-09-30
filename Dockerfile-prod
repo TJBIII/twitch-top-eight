@@ -1,0 +1,19 @@
+FROM node:6.7.0
+
+ENV HOME=/home/app
+
+RUN useradd --user-group --create-home --shell /bin/false app
+
+USER root
+COPY . $HOME/ext/
+
+RUN chown -R app:app $HOME/*
+
+# Install the npm packages
+WORKDIR $HOME/ext/top_eight/backend
+COPY ./top_eight/backend/package.json ./
+RUN npm install supervisor -g
+RUN npm install
+
+EXPOSE 8000
+CMD ["./entrypoint.sh"]
