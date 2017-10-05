@@ -54,9 +54,13 @@ exports.getTopForChannel = channelID => {
 };
 
 exports.saveTopForChannel = (channelID, top) => {
-    let usernamesArr = top.map(member => member.display_name).filter(member => !member.display_name);
+    let usernameArr = top.map(member => member.display_name).filter(username => {
+        if (!username || !utils.isValidUsername(username)) return false;
 
-    console.log('usernamesArr', usernamesArr);
+        return true;
+    });
+
+    console.log('usernameArr', usernameArr);
 
     // verify that users exist
     return new Promise ((resolve, reject) => {
@@ -65,7 +69,7 @@ exports.saveTopForChannel = (channelID, top) => {
             return;
         }
 
-        twitch.getUsers(usernamesArr).then(twitchUserData => {
+        twitch.getUsers(usernameArr).then(twitchUserData => {
             let confirmedTop = utils.compareTopWithTwitch(top, twitchUserData);
 
             // update so we have the correct positions

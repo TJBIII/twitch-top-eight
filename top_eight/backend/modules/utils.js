@@ -31,3 +31,8 @@ exports.compareTopWithTwitch = (topData, twitchUserData) => {
 
     return confirmedTop;
 };
+
+exports.isValidUsername = (username) => {
+    let regExp = /^[a-zA-Z0-9][\w]{3,24}$/;
+    return regExp.test(username);
+};
