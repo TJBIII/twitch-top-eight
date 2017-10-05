@@ -30,8 +30,8 @@ a {
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .header {
@@ -45,8 +45,46 @@ a {
     max-width: 318px;
 }
 
+.header h3 {
+    margin: 0.6em 1em;
+}
+
 img {
-  border: none;
-  vertical-align: top;
-  max-width: 100%;
+    border: none;
+    vertical-align: top;
+    max-width: 100%;
+}
+
+.pagination {
+    text-align: center;
+    position: fixed;
+    height: 25px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    margin-top: 5px;
+}
+
+.pagination button {
+    background-color: #efeef1;
+    color: #6441a4;
+    padding: 0.5em 2em;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background-color: #d7cceb;
+}
+
+#prevBtn {
+    position: absolute;
+    left: 0;
+}
+
+#nextBtn {
+    position: absolute;
+    right: 0;
 }

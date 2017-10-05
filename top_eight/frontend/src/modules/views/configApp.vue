@@ -63,7 +63,6 @@
                 this.getTop(authData).then(topData => {
                     if (!topData) return;
 
-                    // add the topData data to the page
                     this.setTop(topData.data);
 
                     this.loadingTop = false;
@@ -79,13 +78,11 @@
                 return http.get('top', {qs, auth});
             },
             setTop(top) {
-                console.log('setting top with', top);
                 if (!top) return;
 
                 this.top = top.sort((a, b) => a.position - b.position);
             },
             onUpdate({oldIndex, newIndex}) {
-                console.log('sortable update', event);
                 const movedItem = this.top.splice(oldIndex, 1)[0]
                 this.top.splice(newIndex, 0, movedItem)
                 this.saveButtonText = 'Save';
@@ -110,7 +107,6 @@
                 http.post('saveTop', {body, auth}).then(saveResponse => {
                     this.saveButtonText = 'Saved';
                     this.savingTop = false;
-                    console.log('successfully saved');
                     this.top = saveResponse.data.savedTop;
                 }).catch(err => {
                     console.log('err', err);

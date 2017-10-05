@@ -10,14 +10,15 @@ if (process.env.NODE_ENV === 'production') {
 const { VueSimpleSpinner } = require('vue-simple-spinner');
 Vue.component('simple-spinner', VueSimpleSpinner);
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    const Sortable = require('sortablejs');
-    Vue.directive('sortable', {
-        inserted: function (el, binding) {
-            let sortable = new Sortable(el, binding.value || {});
-        }
-    });
+const Sortable = require('sortablejs');
+Vue.directive('sortable', {
+    inserted: function (el, binding) {
+        console.log('el', el);
+        let sortable = Sortable.create(el, binding.value || {});
+    }
+});
 
+document.addEventListener("DOMContentLoaded", function(event) {
     if (document.getElementById('viewerApp')) {
         const ViewerApp = require('./viewerApp.vue');
         
