@@ -6,7 +6,7 @@
             <simple-spinner></simple-spinner>
         </section>
 
-        <div v-if="!top && !loading" class="center">
+        <div v-if="!allTop && !loading" class="center">
             <div class="panel-info">
                 <h2>Top 8</h2>
             </div>
@@ -21,13 +21,19 @@
             </div>
         </div>
 
-        <div v-if="top && !loading">
+        <div v-if="allTop && !loading">
             <div class="content">
                 <div class="header">
                     <h3>{{ headerText }}</h3>
                 </div>
             </div>
-            <member :member="member" v-for="(member, index) in top" :key="member.position"></member>
+
+            <member :member="member" v-for="(member, index) in currTop" :key="member.position"></member>
+
+            <div v-if="allTop.length > 4" class="pagination" >
+                <button id="prevBtn" v-if="startPos !== 1" v-on:click="prevPage">Prev</button>
+                <button id="nextBtn" v-if="startPos + membersPerPage - 1 < allTop.length" v-on:click="nextPage">Next</button>
+            </div>
         </div>
     </div>
 </template>
@@ -39,7 +45,10 @@
     export default {
         data: () => ({
             authHandler: null,
-            top: [],
+            allTop: [],
+            currTop: [], // currently displayed top friends
+            startPos: 1,
+            membersPerPage: 4,
             loading: true,
             headerText: `Top 8 Friends`
         }),
@@ -54,14 +63,11 @@
                 const data = JSON.parse(message);
 
                 const evt = data.evt,
-                    top = data.top;
-
-                console.log('top', top);
-                console.log('evt', evt);
+                    allTop = data.top;
 
                 switch (evt) {
                     case 'updateTop':
-                        this.setTop(top);
+                        this.setTop(allTop);
                         break;
                 }
             });
@@ -91,11 +97,27 @@
 
                 return http.get('top', {qs, auth});
             },
-            setTop(top) {
-                if (!top) return;
+            setTop(allTop) {
+                if (!allTop) return;
 
-                this.top = top;
-                this.headerText = `Top ${top && top.length ? (top.length > 1 ? top.length + ' Friends' : 'Friend'): '8'} `;
+                this.allTop = allTop;
+                this.headerText = `Top ${allTop && allTop.length ? (allTop.length > 1 ? allTop.length + ' Friends' : 'Friend'): '8'} `;
+
+                this.setVisible();
+            },
+            setVisible() {
+                // set the visible portion of all top friends
+                let startIdx = this.startPos - 1;
+
+                this.currTop = this.allTop.slice(startIdx, startIdx + this.membersPerPage);
+            },
+            nextPage() {
+                this.startPos += 4;
+                this.setVisible();
+            },
+            prevPage() {
+                this.startPos -= 4;
+                this.setVisible();
             }
         }
     }
