@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const KRAKEN_API_ROOT = 'https://api.twitch.tv/kraken';
-const CLIENT_ID = 'fp6wx90nh8ciwtqb6male0jen9dap8';
+const CLIENT_ID = process.env.EXT_CLIENT_ID;
 
 const saveTopToRedis = (confirmedTop, channelID) => {
     return new Promise((resolve, reject) => {

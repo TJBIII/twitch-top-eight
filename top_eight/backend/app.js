@@ -20,7 +20,7 @@ utils.assertEnvVar('SHARED_SECRET');
 utils.assertEnvVar('EXT_CLIENT_ID');
 
 const SHARED_SECRET = Buffer.from(process.env.SHARED_SECRET, 'base64');
-const clientId = 'fp6wx90nh8ciwtqb6male0jen9dap8';
+const clientId = process.env.EXT_CLIENT_ID;
 
 const app = express();
 app.use(bodyParser.json());
@@ -39,12 +39,14 @@ app.get('/', (req, res) => {
     res.sendStatus(200);
 });
 
-app.get(/^\/frontend\/(.*)/, (req, res) => {
-    // This route is for testing phase so that we can return
-    // frontend assets from localhost without a separate service
-    console.log(req.params[0]);
-    res.sendFile(path.join(__dirname, '../frontend', req.params[0]));
-});
+if (process.env.NODE_ENV === 'development') {
+    app.get(/^\/frontend\/(.*)/, (req, res) => {
+        // This route is for testing phase so that we can return
+        // frontend assets from localhost without a separate service
+        console.log(req.params[0]);
+        res.sendFile(path.join(__dirname, '../frontend', req.params[0]));
+    });
+}
 
 app.get('/top', (req, res) => {
     if (!req.headers.authorization) {
@@ -71,13 +73,6 @@ app.get('/top', (req, res) => {
             let response = {data: top};
             res.send(response);
         });
-
-        // let top = [{position: 2, display_name: 'tBUIDa8', logo: 'https://static-cdn.jtvnw.net/jtv_user_pictures/tbuida8-profile_image-b5617a5a20025236-300x300.png'}, {position: 1, display_name: 'testFriend', url: 'https://static-cdn.jtvnw.net/jtv_user_pictures/drdisrespectlive-profile_image-abc1fc67d2ea1ae1-300x300.png'}]
-        // while (top.length < 8) {
-        //     top.push({position: top.length + 1, display_name: `friend${top.length + 1}`, logo: null});
-        // }
-        // let response = {data: top}
-        // res.send(response);
     });
 });
 
