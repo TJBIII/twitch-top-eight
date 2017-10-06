@@ -1,5 +1,5 @@
 const $ = require('jquery');
-const BASE_API_ENDPOINT = (process.env.NODE_ENV === 'development') ? 'https://localhost.twitch.tv:3002' : 'TODO: prod URL';
+const BASE_API_ENDPOINT = (process.env.NODE_ENV === 'development') ? 'https://localhost.twitch.tv:3002' : 'https://top-8.gamewisp.com';
 
 class AuthHandler {
     constructor(initialAuthCallback, updateAuthCallback) {

@@ -15,7 +15,7 @@
                     <div class="member" v-for="(member, index) in top" :key="member.position">
                         <div class="member_name">{{`${index + 1 }.`}} {{ member.display_name }}</div>
                         <img v-if="member.logo" v-bind:src="member.logo">
-                        <img v-if="!member.logo" src="assets/img/glitch_purple.png">
+                        <img v-if="!member.logo" src="assets/img/glitch.png">
                         <div><a target="_blank" :href="'https://twitch.tv/' + member.display_name"><button class="btn btn-view">View</button></a></div>
                         <div><button class="btn btn-remove" v-on:click="removeMember(index)">Remove</button></div>
                     </div>
@@ -117,7 +117,8 @@
 
                 let newMember = {
                     display_name: this.newMemberUsernameText,
-                    position: this.top.length + 1
+                    position: this.top.length + 1,
+                    logo: 'assets/img/loader.gif'
                 }
 
                 this.top.push(newMember);
