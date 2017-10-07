@@ -19,6 +19,13 @@
     text-align: center;
 }
 
+.instructions {
+    padding: 2em 2em;
+    background-color: #efeef1;
+    color: #444;
+    margin-bottom: 3em;
+}
+
 .save-button button {
     padding: 1.5em;
     font-size: 1em;
@@ -61,20 +68,16 @@
 }
 
 .add img {
-    max-width: 90%;
+    max-width: 80%;
     margin: 0 auto;
+    margin-top: 10px;
     opacity: 0.1;
-}
-
-.add img:hover {
-    cursor: pointer;
-    opacity: 0.9;
 }
 
 .add input {
     max-width: 100%;
     margin: 0 auto;
-    padding: 5px;
+    padding: 9px 5px;
     height: 17px;
     width: 80%;
 }
@@ -99,5 +102,10 @@ button.btn {
 
 .btn-remove:hover {
     background-color: #b71c1c;
+    color: #fff;
+}
+
+.btn-add:hover {
+    background-color: #1b5e20;
     color: #fff;
 }

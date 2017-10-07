@@ -25,7 +25,7 @@
         <a :href="'https://twitch.tv/' + member.display_name" target="_blank">
             <div class="member-name">{{ member.position + '.' + ' ' + member.display_name }}</div>
             <img v-if="member.logo" v-bind:src="member.logo">
-            <img v-if="!member.logo" src="assets/img/glitch_purple.png">
+            <img v-if="!member.logo" src="assets/img/glitch.png">
         </a>
     </div>
 </template>

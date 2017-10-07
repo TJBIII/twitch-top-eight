@@ -1,7 +1,7 @@
 const $ = require('jquery');
 const querystring = require('querystring');
 
-const BASE_API_ENDPOINT = (process.env.NODE_ENV === 'development') ? 'https://localhost.twitch.tv:3002' : 'TODO: prod url';
+const BASE_API_ENDPOINT = (process.env.NODE_ENV === 'development') ? 'https://localhost.twitch.tv:3002' : 'https://top-8.gamewisp.com';
 
 function request(method, path, options = {}) {
     return new Promise((resolve, reject) => {

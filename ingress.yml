@@ -1,12 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: top-eight-ext-ingress
+  name: top-8-ext-ingress
   annotations:
     kubernetes.io/ingress.allow-http: false
-    kubernetes.io/ingress.global-static-ip-name: top-eight-ext-static-lb-ip
-    ingress.gcp.kubernetes.io/pre-shared-cert: topeightextensioncert
+    kubernetes.io/ingress.global-static-ip-name: top-8-ext-static-lb-ip
+    ingress.gcp.kubernetes.io/pre-shared-cert: top8cert
 spec:
   backend:
-    serviceName: top-eight-ext
+    serviceName: top-8-ext
     servicePort: 80

@@ -2,20 +2,19 @@
 
 <template>
     <div class="container">
-        <p v-if="!top">Add a streamer or viewer to your top friends by username in the input field below. Click a user's image and drag to sort. Click the save button at the bottom to lock-in your changes.</p>
-        <p v-else>Click a user's image and drag to sort. Click the save button at the bottom to lock-in your changes.</p>
-
         <div v-cloak class="top-container">
             <section class="spinner-container" v-if="loadingTop">
                 <simple-spinner></simple-spinner>
             </section>
 
             <div v-if="!loadingTop">
+                <p class="instructions">Add up to 8  friends below! Click and drag on a user's image to sort, and then click the save button at the bottom to lock in your changes.</p>
+
                 <span v-sortable="{onUpdate: onUpdate}">
                     <div class="member" v-for="(member, index) in top" :key="member.position">
                         <div class="member_name">{{`${index + 1 }.`}} {{ member.display_name }}</div>
                         <img v-if="member.logo" v-bind:src="member.logo">
-                        <img v-if="!member.logo" src="assets/img/glitch_purple.png">
+                        <img v-if="!member.logo" src="assets/img/glitch.png">
                         <div><a target="_blank" :href="'https://twitch.tv/' + member.display_name"><button class="btn btn-view">View</button></a></div>
                         <div><button class="btn btn-remove" v-on:click="removeMember(index)">Remove</button></div>
                     </div>
@@ -23,7 +22,8 @@
 
                 <div v-if="top && top.length < 8" class="add">
                     <input placeholder="Add by username..." v-model="newMemberUsernameText" v-on:keyup.enter="addMember" type="text">
-                    <img v-on:click="addMember" src="assets/img/add.png">
+                    <img src="assets/img/glitch.png">
+                    <div><button class="btn btn-add" v-on:click="addMember">Add</button></div>
                 </div>
 
                 <div v-if="top" class="save-button">
@@ -117,7 +117,8 @@
 
                 let newMember = {
                     display_name: this.newMemberUsernameText,
-                    position: this.top.length + 1
+                    position: this.top.length + 1,
+                    logo: 'assets/img/loader.gif'
                 }
 
                 this.top.push(newMember);

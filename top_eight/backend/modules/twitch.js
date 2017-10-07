@@ -2,12 +2,14 @@ const rp = require('request-promise-native');
 const utils = require('./utils');
 
 const KRAKEN_API_ROOT = 'https://api.twitch.tv/kraken';
-const CLIENT_ID = 'fp6wx90nh8ciwtqb6male0jen9dap8';
+const CLIENT_ID = process.env.EXT_CLIENT_ID;
 
 exports.getUsers = usernameArr => {
     usernameArr = usernameArr.filter(username => utils.isValidUsername(username));
 
-    if (!usernameArr.length) return false;
+    if (!usernameArr.length) {
+        return Promise.resolve([]);
+    };
 
     const options = {
         uri: `${KRAKEN_API_ROOT}/users`,
