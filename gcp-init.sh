@@ -15,6 +15,7 @@ gcloud container clusters get-credentials top-8-ext \
 kubectl delete service top-8-ext
 
 kubectl run top-8-ext --image=us.gcr.io/twitch-extensions/twitch-ext-top-eight:v0 --port 8000
+kubectl expose deployment top-8-ext --type=NodePort --port 80
 kubectl apply -f ingress.yml
 
 kubectl proxy --port=9061
