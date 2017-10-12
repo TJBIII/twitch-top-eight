@@ -6,9 +6,9 @@
             <simple-spinner></simple-spinner>
         </section>
 
-        <div v-if="!allTop && !loading" class="center">
+        <div v-if="!allTop.length && !loading" class="center">
             <div class="panel-info">
-                <h2>Top 8</h2>
+                <h2>Top 8+</h2>
             </div>
 
             <div class="panel-body">
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div v-if="allTop && !loading">
+        <div v-if="allTop.length && !loading">
             <div class="content">
                 <div class="header">
                     <h3>{{ headerText }}</h3>
