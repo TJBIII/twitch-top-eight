@@ -13,7 +13,6 @@ Vue.component('simple-spinner', VueSimpleSpinner);
 const Sortable = require('sortablejs');
 Vue.directive('sortable', {
     inserted: function (el, binding) {
-        console.log('el', el);
         let sortable = Sortable.create(el, binding.value || {});
     }
 });

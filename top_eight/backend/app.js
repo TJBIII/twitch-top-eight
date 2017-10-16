@@ -19,8 +19,15 @@ utils.assertEnvVar('NODE_ENV');
 utils.assertEnvVar('SHARED_SECRET');
 utils.assertEnvVar('EXT_CLIENT_ID');
 
+let raygun;
+if (process.env.NODE_ENV === 'production') {
+    raygun = require('./modules/raygun').client;
+    console.log = () => {};
+} else {
+    raygun = {send: (err) => {console.error(`dev: reporting raygun error ${err}`)}};
+}
+
 const SHARED_SECRET = Buffer.from(process.env.SHARED_SECRET, 'base64');
-const clientId = process.env.EXT_CLIENT_ID;
 
 const app = express();
 app.use(bodyParser.json());
@@ -72,6 +79,8 @@ app.get('/top', (req, res) => {
             console.log('top', top);
             let response = {data: top};
             res.send(response);
+        }, err => {
+            raygun.send(err);
         });
     });
 });
@@ -107,6 +116,7 @@ app.post('/saveTop', (req, res) => {
                 data = {error: err};
             console.log('error savingtopforchannel promise', err);
             res.send({status, data});
+            raygun.send(err);
         });
     });
 })
@@ -120,10 +130,10 @@ if (process.env.NODE_ENV === 'development') {
     };
 
     https.createServer(options, app).listen(PORT, () => {
-        console.log('top 8 backend service running on https', PORT);
+        console.error('top 8 backend service running on https', PORT);
     });
 } else {
     app.listen(80, () => {
-        console.log(`listening on port 80`);
+        console.error(`listening on port 80`);
     });
 }
